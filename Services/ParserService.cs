@@ -19,6 +19,7 @@ using AdaptWebParser.Models;
 using AdaptWebParser.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Text;
+using System.IO.Compression;
 
 namespace AdaptWebParser.Services
 {
@@ -29,8 +30,13 @@ namespace AdaptWebParser.Services
 
         public void Config()
         {
+            //use the below to test locally
+#if DEBUG 
             string path = Path.Combine(Environment.CurrentDirectory, @"AdaptPlugin\");
             PluginFactory factory = new PluginFactory(path);
+#else
+            PluginFactory factory = new PluginFactory("/app/AdaptPlugin/");
+#endif
             plugin = factory.GetPlugin("ClimateADAPT");
             plugin.Initialize();
             tempDir = CreateTempDir();
@@ -59,12 +65,13 @@ namespace AdaptWebParser.Services
                 }
                 result.Add(model);
             }
+            tempDir.Delete(true);
             return result;
         }
 
         public static DirectoryInfo CreateTempDir()
         {
-            string path = Path.GetTempPath() + Guid.NewGuid().ToString("N");
+            string path = Path.GetTempPath() + "TempFiles";
             DirectoryInfo tempDir = new DirectoryInfo(path);
             tempDir.Create();
             tempDir.Refresh();
@@ -75,9 +82,8 @@ namespace AdaptWebParser.Services
         public static void Unzip(IFormFile zipfile, DirectoryInfo tempDir)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            using (ZipFile zip = ZipFile.Read(zipfile.OpenReadStream()))
-            {
-                zip.ExtractAll(tempDir.FullName);
+            using (ZipArchive archive = new ZipArchive(zipfile.OpenReadStream(), ZipArchiveMode.Read)) {
+                archive.ExtractToDirectory(tempDir.FullName);
             }
         }
 
