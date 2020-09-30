@@ -17,6 +17,6 @@ RUN dotnet publish "AdaptWebParser.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-COPY bin/Release/netcoreapp3.1/publish/AdaptPlugin/ AdaptPlugin/
+COPY AdaptPlugin/ AdaptPlugin/
 #RUN mkdir temp
 ENTRYPOINT ["dotnet", "AdaptWebParser.dll"]
