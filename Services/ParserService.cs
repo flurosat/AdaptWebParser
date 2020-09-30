@@ -31,12 +31,10 @@ namespace AdaptWebParser.Services
         public void Config()
         {
             //use the below to test locally
-#if DEBUG 
-            string path = Path.Combine(Environment.CurrentDirectory, @"AdaptPlugin\");
-            PluginFactory factory = new PluginFactory(path);
-#else
+            //string path = Path.Combine(Environment.CurrentDirectory, @"AdaptPlugin\");
+            //PluginFactory factory = new PluginFactory(path);
             PluginFactory factory = new PluginFactory("/app/AdaptPlugin/");
-#endif
+
             plugin = factory.GetPlugin("ClimateADAPT");
             plugin.Initialize();
             tempDir = CreateTempDir();
