@@ -20,6 +20,8 @@ namespace AdaptWebParser
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    string HttpPort = Environment.GetEnvironmentVariable("HTTPPORT");
+                    webBuilder.UseUrls(String.IsNullOrEmpty(HttpPort) ? "http://*:8080" : "http://*:" + HttpPort);
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseKestrel(options =>
                     {

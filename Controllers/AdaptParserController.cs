@@ -24,6 +24,7 @@ namespace AdaptWebParser.Controllers
         }
 
         [HttpPost]
+        [DisableRequestSizeLimit]
         [Route("parse")]
         public List<AdaptOutputModel> ParseAdapt()
         {
