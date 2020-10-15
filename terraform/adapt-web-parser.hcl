@@ -92,9 +92,9 @@ VECTORCFG
 
         tags = [
           "traefik.http.middlewares.adapt-web-parser-${adapt_web_parser_version}-stripprefix.stripprefix.prefixes=/adapt-web-parser",
-          "traefik.http.routers.adapt-web-parser-${adapt_web_parser_version}.entrypoints=http",
+          "traefik.http.routers.adapt-web-parser-${adapt_web_parser_version}.entrypoints=http_internal",
           "traefik.http.routers.adapt-web-parser-${adapt_web_parser_version}.middlewares=adapt-web-parser-${adapt_web_parser_version}-stripprefix",
-          "traefik.http.routers.adapt-web-parser-${adapt_web_parser_version}.rule=Host(`a.${env}.flurosense.io`, `a.${env}.flurosense.com`)&&PathPrefix(`/adapt-web-parser`)",
+          "traefik.http.routers.adapt-web-parser-${adapt_web_parser_version}.rule=Host(`api.${env}.internal`)&&PathPrefix(`/adapt-web-parser`)",
           "version=${adapt_web_parser_version}",
         ]
 
